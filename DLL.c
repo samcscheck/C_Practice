@@ -44,6 +44,7 @@ struct Node* insert(struct Node *head, int val) {
         current->next = NULL;
         current->prev = NULL;
         inserted = true;
+        printf("doing this\n");
         return current;
     }
     while(!inserted && current != NULL) {
@@ -88,9 +89,12 @@ struct Node* delete(struct Node *head, int val) {
         if(current->value == val) {
             // if first in list
             if(current->prev == NULL) {
-                current->next->prev = NULL;
+                if(current->next) {
+                    current->next->prev = NULL;
+                }
                 struct Node *temp = current->next;
                 free(current);
+                printf("doing this\n");
                 return temp;
             // if last in list
             } else if(current->next == NULL) {
@@ -117,8 +121,9 @@ int main(void) {
     
     // manipulate list
     head = insert(head, 1); // edge case: adding first node
-    head = insert(head, 3); // edge case: adding to end
-    head = insert(head, 7);
+    head = delete(head, 1); // edge case: deleting when len = 1
+    head = insert(head, 3); 
+    head = insert(head, 7); // edge case: adding to end
     head = insert(head, 4);
     head = insert(head, 2);
     head = insert(head, 1);
@@ -129,6 +134,8 @@ int main(void) {
     head = delete(head, 7); // edge case: deleting from the end
     head = delete(head, 2); 
     head = delete(head, 1); // edge case: deleting from the beginning
+    head = delete(head, 3);
+    head = delete(head, 4);
     display(head);
     len = getLength(head);
     printf("current length: %d\n", len);
